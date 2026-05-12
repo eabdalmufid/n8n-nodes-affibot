@@ -19,6 +19,14 @@
     "name": "eabdalmufid",
     "email": "mail@affidev.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eabdalmufid/n8n-nodes-affibot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eabdalmufid/n8n-nodes-affibot/issues"
+  },
+  "homepage": "https://github.com/eabdalmufid/n8n-nodes-affibot#readme",
   "license": "MIT",
   "n8n": {
     "nodes": [
