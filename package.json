@@ -1,0 +1,46 @@
+{
+  "name": "@affidev/n8n-nodes-affibot",
+  "version": "1.0.0",
+  "description": "n8n nodes for Affibot WhatsApp API",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc && gulp",
+    "watch": "tsc --watch",
+    "lint": "eslint \"**/*.ts\"",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "n8n-community-node-package",
+    "affibot",
+    "whatsapp",
+    "automation"
+  ],
+  "author": {
+    "name": "eabdalmufid",
+    "email": "mail@affidev.com"
+  },
+  "license": "MIT",
+  "n8n": {
+    "nodes": [
+      "dist/nodes/Affibot/Affibot.node.js",
+      "dist/nodes/Affibot/AffibotTrigger.node.js"
+    ],
+    "credentials": [
+      "dist/credentials/AffibotApi.credentials.js"
+    ]
+  },
+  "files": [
+    "dist",
+    "nodes/**/*.svg"
+  ],
+  "peerDependencies": {
+    "n8n-workflow": ">=1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "eslint": "^8.0.0",
+    "gulp": "^4.0.2",
+    "n8n-workflow": "^2.16.0",
+    "typescript": "^6.0.3"
+  }
+}
