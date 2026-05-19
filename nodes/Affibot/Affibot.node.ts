@@ -79,9 +79,19 @@ export class Affibot implements INodeType {
 						action: 'Send a sticker',
 					},
 					{
+						name: 'Send Location',
+						value: 'sendLocation',
+						action: 'Send a location',
+					},
+					{
 						name: 'Send Bulk',
 						value: 'sendBulk',
 						action: 'Send bulk messages',
+					},
+					{
+						name: 'Delete Message',
+						value: 'deleteMessage',
+						action: 'Delete / Unsend a message',
 					},
 				],
 				default: 'sendText',
@@ -126,7 +136,7 @@ export class Affibot implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['message'],
-						operation: ['sendText', 'sendImage', 'sendDocument', 'sendVideo', 'sendSticker'],
+						operation: ['sendText', 'sendImage', 'sendDocument', 'sendVideo', 'sendSticker', 'sendLocation', 'deleteMessage'],
 					},
 				},
 				description: 'The recipient JID (e.g. 628xxx@s.whatsapp.net)',
@@ -236,6 +246,65 @@ export class Affibot implements INodeType {
 				description: 'URL of the media (if type is not text)',
 			},
 
+			// Location Parameters
+			{
+				displayName: 'Latitude',
+				name: 'latitude',
+				type: 'number',
+				required: true,
+				default: 0,
+				displayOptions: {
+					show: {
+						resource: ['message'],
+						operation: ['sendLocation'],
+					},
+				},
+				description: 'Latitude coordinates of the location',
+			},
+			{
+				displayName: 'Longitude',
+				name: 'longitude',
+				type: 'number',
+				required: true,
+				default: 0,
+				displayOptions: {
+					show: {
+						resource: ['message'],
+						operation: ['sendLocation'],
+					},
+				},
+				description: 'Longitude coordinates of the location',
+			},
+
+			// Delete Message Parameters
+			{
+				displayName: 'Message ID',
+				name: 'messageId',
+				type: 'string',
+				required: true,
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['message'],
+						operation: ['deleteMessage'],
+					},
+				},
+				description: 'The ID of the message to delete / unsend',
+			},
+			{
+				displayName: 'From Me',
+				name: 'fromMe',
+				type: 'boolean',
+				default: true,
+				displayOptions: {
+					show: {
+						resource: ['message'],
+						operation: ['deleteMessage'],
+					},
+				},
+				description: 'Whether the message was sent by you',
+			},
+
 			// Profile Parameters
 			{
 				displayName: 'Phone',
@@ -261,7 +330,7 @@ export class Affibot implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['message'],
-						operation: ['sendText', 'sendImage', 'sendDocument', 'sendVideo', 'sendSticker', 'sendBulk'],
+						operation: ['sendText', 'sendImage', 'sendDocument', 'sendVideo', 'sendSticker', 'sendLocation', 'sendBulk'],
 					},
 				},
 			},
@@ -285,45 +354,56 @@ export class Affibot implements INodeType {
 
 				if (resource === 'message') {
 					if (operation === 'sendText') {
-						endpoint = '/message/send-text';
+						endpoint = '/api/send-text';
 						body.to = this.getNodeParameter('to', i) as string;
 						body.text = this.getNodeParameter('text', i) as string;
 						body.is_group = this.getNodeParameter('isGroup', i) as boolean;
 					} else if (operation === 'sendImage') {
-						endpoint = '/message/send-image';
+						endpoint = '/api/send-image';
 						body.to = this.getNodeParameter('to', i) as string;
 						body.text = this.getNodeParameter('text', i) as string;
 						body.image_url = this.getNodeParameter('imageUrl', i) as string;
 						body.is_group = this.getNodeParameter('isGroup', i) as boolean;
 					} else if (operation === 'sendDocument') {
-						endpoint = '/message/send-document';
+						endpoint = '/api/send-document';
 						body.to = this.getNodeParameter('to', i) as string;
 						body.text = this.getNodeParameter('text', i) as string;
 						body.document_url = this.getNodeParameter('documentUrl', i) as string;
 						body.document_name = this.getNodeParameter('documentName', i) as string;
 						body.is_group = this.getNodeParameter('isGroup', i) as boolean;
 					} else if (operation === 'sendVideo') {
-						endpoint = '/message/send-video';
+						endpoint = '/api/send-video';
 						body.to = this.getNodeParameter('to', i) as string;
 						body.text = this.getNodeParameter('text', i) as string;
 						body.video_url = this.getNodeParameter('videoUrl', i) as string;
 						body.is_group = this.getNodeParameter('isGroup', i) as boolean;
 					} else if (operation === 'sendSticker') {
-						endpoint = '/message/send-sticker';
+						endpoint = '/api/send-sticker';
 						body.to = this.getNodeParameter('to', i) as string;
 						body.image_url = this.getNodeParameter('imageUrl', i) as string;
 						body.is_group = this.getNodeParameter('isGroup', i) as boolean;
+					} else if (operation === 'sendLocation') {
+						endpoint = '/api/send-location';
+						body.to = this.getNodeParameter('to', i) as string;
+						body.latitude = this.getNodeParameter('latitude', i) as number;
+						body.longitude = this.getNodeParameter('longitude', i) as number;
+						body.is_group = this.getNodeParameter('isGroup', i) as boolean;
 					} else if (operation === 'sendBulk') {
-						endpoint = '/message/send-bulk';
+						endpoint = '/api/send-bulk';
 						const numbersStr = this.getNodeParameter('numbers', i) as string;
 						body.numbers = numbersStr.split(',').map(n => n.trim());
 						body.text = this.getNodeParameter('text', i) as string;
 						body.media_url = this.getNodeParameter('mediaUrl', i) as string;
 						body.is_group = this.getNodeParameter('isGroup', i) as boolean;
+					} else if (operation === 'deleteMessage') {
+						endpoint = '/api/delete';
+						body.to = this.getNodeParameter('to', i) as string;
+						body.message_id = this.getNodeParameter('messageId', i) as string;
+						body.from_me = this.getNodeParameter('fromMe', i) as boolean;
 					}
 				} else if (resource === 'profile') {
 					if (operation === 'checkNumber') {
-						endpoint = '/profile/check';
+						endpoint = '/api/check';
 						body.phone = this.getNodeParameter('phone', i) as string;
 					}
 				}
