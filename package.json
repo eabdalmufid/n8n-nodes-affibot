@@ -1,6 +1,6 @@
 {
   "name": "@affidev/n8n-nodes-affibot",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "n8n nodes for Affibot WhatsApp API",
   "main": "dist/index.js",
   "scripts": {
