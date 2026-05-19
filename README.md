@@ -20,7 +20,9 @@ Send messages and manage your WhatsApp sessions.
     - `Send Document`: Files with custom names and captions.
     - `Send Video`: Videos with captions.
     - `Send Sticker`: Stickers from image URLs.
+    - `Send Location`: Locations using latitude and longitude.
     - `Send Bulk`: Send to multiple recipients with a queue.
+    - `Delete Message`: Delete / unsend an existing message by ID.
 - **Resource: Profile**
     - `Check Number`: Verify if a phone number is registered on WhatsApp.
 
